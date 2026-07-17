@@ -564,6 +564,11 @@
 
   /* ---------- POI orientation map ---------- */
   .poi-mapwrap { margin: 8px 0 26px; }
+  .leaflet-map { height: 420px; width: 100%; border-radius: 14px; border: 1px solid var(--granite-line); overflow: hidden; background: var(--paper-raised); }
+  .leaflet-map[hidden] { display: none; }
+  #poi-svg-fallback[hidden] { display: none; }
+  .lmk { width: 28px; height: 28px; border-radius: 50%; color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; border: 2.5px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.45); font-family: var(--font-body); box-sizing: border-box; }
+  .leaflet-popup-content { font-family: var(--font-body); direction: rtl; font-size: 0.9rem; }
   .poi-map { width: 100%; height: auto; display: block; border: 1px solid var(--granite-line); border-radius: 14px; }
   .pm-bg { fill: var(--paper-raised); stroke: none; }
   .pm-ridge { fill: color-mix(in srgb, var(--granite) 22%, transparent); stroke: none; }
@@ -957,6 +962,8 @@
       <span><i style="background:var(--larch)"></i>מערה</span>
       <span><i style="background:var(--granite)"></i>כפר בסיס</span>
     </div>
+    <div id="poi-leaflet" class="leaflet-map" hidden></div>
+    <div id="poi-svg-fallback">
     <svg viewBox="0 0 992.0 729.3" class="poi-map" role="img" aria-label="מפת התמצאות של נקודות העניין בטטרה הגבוהה" xmlns="http://www.w3.org/2000/svg">
 <rect x="1" y="1" width="990.0" height="727.3" rx="16" class="pm-bg"/>
 <path d="M 46.0 46.0 L 46.0 75.4 L 91.0 119.1 L 136.0 115.0 L 181.0 83.1 L 226.0 122.1 L 271.0 110.0 L 316.0 90.7 L 361.0 123.9 L 406.0 104.1 L 451.0 97.8 L 496.0 124.4 L 541.0 97.5 L 586.0 104.4 L 631.0 123.8 L 676.0 90.3 L 721.0 110.3 L 766.0 121.9 L 811.0 82.7 L 856.0 115.3 L 901.0 118.9 L 946.0 75.8 L 946.0 46.0 Z" class="pm-ridge"/>
@@ -975,6 +982,7 @@
 <g class="pm-pin"><circle cx="767.3" cy="383.8" r="15" class="pin-village"/><text x="767.3" y="388.8" text-anchor="middle" class="pm-num">10</text></g>
 <g class="pm-pin"><circle cx="890.7" cy="97.0" r="15" class="pin-cave"/><text x="890.7" y="102.0" text-anchor="middle" class="pm-num">11</text></g>
 </svg>
+    </div>
 <ol class="poi-legend">
 <li><span class="lg-num pin-lake">1</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1194,20.063" target="_blank" rel="noopener">שטרבסקה פלסו <span class="lg-cat">· אגם</span> 📍</a></li>
 <li><span class="lg-num pin-peak">2</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.128,20.0611" target="_blank" rel="noopener">פרדנה סוליסקו <span class="lg-cat">· פסגה/רכבל</span> 📍</a></li>
@@ -988,8 +996,58 @@
 <li><span class="lg-num pin-village">10</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1661,20.2694" target="_blank" rel="noopener">טטרנסקה לומניצה <span class="lg-cat">· כפר בסיס</span> 📍</a></li>
 <li><span class="lg-num pin-cave">11</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.2246,20.3078" target="_blank" rel="noopener">מערת בליאנסקה <span class="lg-cat">· מערה</span> 📍</a></li>
 </ol>
-    <p class="note">מפת התמצאות סכמטית — המיקומים היחסיים נכונים אך לא בקנה מידה מדויק. לחיצה על שם במקרא פותחת את המיקום המדויק ב-Google Maps.</p>
+    <p class="note">כשיש חיבור לאינטרנט תוצג כאן מפה אמיתית ואינטראקטיבית (אפשר להזיז, לזום וללחוץ על סימון). בלי חיבור — מוצגת סכמת התמצאות. בכל מקרה, לחיצה על שם במקרא פותחת ניווט מדויק ב-Google Maps.</p>
   </div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+  (function () {
+    var POIS = [
+      [1, "שטרבסקה פלסו", 49.1194, 20.0630, "lake"],
+      [2, "פרדנה סוליסקו", 49.1280, 20.0611, "peak"],
+      [3, "פופרדסקה פלסו", 49.1508, 20.0876, "lake"],
+      [4, "בית הקברות הסמלי", 49.1560, 20.0857, "hut"],
+      [5, "סליזסקי דום", 49.1631, 20.1503, "hut"],
+      [6, "סטארי סמוקובץ / הרביינוק", 49.1416, 20.2210, "village"],
+      [7, "לומניצקי שטיט", 49.1953, 20.2131, "peak"],
+      [8, "סקלנטה פלסו", 49.1887, 20.2323, "lake"],
+      [9, "זלנה פלסו", 49.2018, 20.2390, "lake"],
+      [10, "טטרנסקה לומניצה", 49.1661, 20.2694, "village"],
+      [11, "מערת בליאנסקה", 49.2246, 20.3078, "cave"]
+    ];
+    var COL = { lake: "#1B6570", peak: "#9A3B29", hut: "#35633F", cave: "#B06A20", village: "#8A8274" };
+    function initMap() {
+      if (!window.L) return; // no connection / blocked -> keep the SVG fallback
+      var el = document.getElementById('poi-leaflet');
+      var fb = document.getElementById('poi-svg-fallback');
+      if (!el) return;
+      el.hidden = false;
+      if (fb) fb.hidden = true;
+      var map = L.map(el, { scrollWheelZoom: false });
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18, attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+      var pts = [];
+      POIS.forEach(function (p) {
+        var icon = L.divIcon({
+          className: 'lmk-wrap',
+          html: '<div class="lmk" style="background:' + COL[p[4]] + '">' + p[0] + '</div>',
+          iconSize: [28, 28], iconAnchor: [14, 14]
+        });
+        L.marker([p[2], p[3]], { icon: icon }).addTo(map)
+          .bindPopup('<b>' + p[0] + '. ' + p[1] + '</b><br><a href="https://www.google.com/maps/search/?api=1&query=' + p[2] + ',' + p[3] + '" target="_blank" rel="noopener">ניווט ב-Google Maps ↗</a>');
+        pts.push([p[2], p[3]]);
+      });
+      map.fitBounds(pts, { padding: [30, 30] });
+      setTimeout(function () { map.invalidateSize(); }, 200);
+    }
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initMap);
+    } else {
+      initMap();
+    }
+  })();
+  </script>
   <div class="grid">
     <div class="card">
       <h4>שטרבסקה פלסו</h4>
