@@ -562,6 +562,51 @@
     .tab-panel[hidden] { display: block !important; }
   }
 
+  /* ---------- POI orientation map ---------- */
+  .poi-mapwrap { margin: 8px 0 26px; }
+  .poi-map { width: 100%; height: auto; display: block; border: 1px solid var(--granite-line); border-radius: 14px; }
+  .pm-bg { fill: var(--paper-raised); stroke: none; }
+  .pm-ridge { fill: color-mix(in srgb, var(--granite) 22%, transparent); stroke: none; }
+  .pm-rail { fill: none; stroke: var(--granite); stroke-width: 3; stroke-dasharray: 2 8; stroke-linecap: round; opacity: 0.8; }
+  .pm-rail-lbl { fill: var(--ink-soft); font-family: var(--font-body); font-size: 17px; font-weight: 500; }
+  .pm-comp-bg { fill: color-mix(in srgb, var(--paper) 70%, var(--paper-raised)); stroke: var(--granite-line); stroke-width: 1; }
+  .pm-comp-n { fill: var(--rust); }
+  .pm-comp-t { fill: var(--ink-soft); font-family: var(--font-body); font-size: 15px; font-weight: 700; }
+  .pm-num { fill: #fff; font-family: var(--font-body); font-size: 16px; font-weight: 700; }
+  .pin-lake { fill: var(--tarn); }
+  .pin-peak { fill: var(--rust); }
+  .pin-hut { fill: var(--spruce); }
+  .pin-cave { fill: var(--larch); }
+  .pin-village { fill: var(--granite); }
+  .pm-pin circle { stroke: var(--paper-raised); stroke-width: 2.5; }
+
+  .poi-legend { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 18px; }
+  @media (max-width: 560px) { .poi-legend { grid-template-columns: 1fr; } }
+  .poi-legend li { display: flex; align-items: center; gap: 10px; }
+  .lg-num {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  .lg-num.pin-lake { background: var(--tarn); } .lg-num.pin-peak { background: var(--rust); }
+  .lg-num.pin-hut { background: var(--spruce); } .lg-num.pin-cave { background: var(--larch); }
+  .lg-num.pin-village { background: var(--granite); }
+  .lg-num[class*="pin-"] { fill: none; }
+  .lg-name { font-size: 0.9rem; color: var(--ink); text-decoration: none; }
+  .lg-name:hover { color: var(--tarn-ink); text-decoration: underline; }
+  .lg-cat { color: var(--ink-soft); font-size: 0.82rem; }
+  .map-key { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 14px 0 4px; font-size: 0.8rem; color: var(--ink-soft); }
+  .map-key span { display: inline-flex; align-items: center; gap: 6px; }
+  .map-key i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+
+  /* map link on cards */
+  .maplink {
+    display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
+    font-size: 0.8rem; font-weight: 600; color: var(--tarn-ink); text-decoration: none;
+    border: 1px solid var(--granite-line); border-radius: 999px; padding: 4px 12px; align-self: flex-start;
+  }
+  .maplink:hover { border-color: var(--tarn); background: var(--tarn-soft); }
+
   /* ---------- coupons tab ---------- */
   .coup-intro { padding: 40px 0 6px; }
   .coup-intro h2 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); margin: 8px 0 12px; }
@@ -829,6 +874,7 @@
     <div class="card">
       <h4>טירת ספיש</h4>
       <div class="meta"><span class="sk">Spišský hrad</span> · אתר אונסק"ו</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=48.9995,20.7675" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אחד ממתחמי המבצרים הגדולים באירופה (כ-41,000 מ"ר), נבנה במאה ה-12. חורבות ענקיות על גבעה בודדת עם נוף פתוח לכל הכיוונים — כ-100 ק"מ מקושיצה.</p>
     </div>
     <div class="card">
@@ -903,64 +949,115 @@
   <div class="chap-label"><span class="chap-num">פרק ה</span></div>
   <h2><span class="ic">📍</span>נקודות העניין המובילות</h2>
   <p class="lede">מאגם קרחון קלאסי ועד רכבל היסטורי לפסגה ומערת נטיפים יחידה מסוגה בגן הלאומי — האתרים שכדאי לתכנן סביבם את הטיול. סימון המחיר: <span class="price">€</span> עד כ-10€, <span class="price">€€</span> כ-10–25€, <span class="price">€€€</span> מעל כ-25€ לאדם (מחירים משתנים, לבדוק מראש).</p>
+  <div class="poi-mapwrap">
+    <div class="map-key">
+      <span><i style="background:var(--tarn)"></i>אגם</span>
+      <span><i style="background:var(--rust)"></i>פסגה / רכבל</span>
+      <span><i style="background:var(--spruce)"></i>בקתה / עמק</span>
+      <span><i style="background:var(--larch)"></i>מערה</span>
+      <span><i style="background:var(--granite)"></i>כפר בסיס</span>
+    </div>
+    <svg viewBox="0 0 992.0 729.3" class="poi-map" role="img" aria-label="מפת התמצאות של נקודות העניין בטטרה הגבוהה" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="990.0" height="727.3" rx="16" class="pm-bg"/>
+<path d="M 46.0 46.0 L 46.0 75.4 L 91.0 119.1 L 136.0 115.0 L 181.0 83.1 L 226.0 122.1 L 271.0 110.0 L 316.0 90.7 L 361.0 123.9 L 406.0 104.1 L 451.0 97.8 L 496.0 124.4 L 541.0 97.5 L 586.0 104.4 L 631.0 123.8 L 676.0 90.3 L 721.0 110.3 L 766.0 121.9 L 811.0 82.7 L 856.0 115.3 L 901.0 118.9 L 946.0 75.8 L 946.0 46.0 Z" class="pm-ridge"/>
+<path d="M 93.2 565.1 L 611.7 503.9 L 767.3 383.8" class="pm-rail"/>
+<text x="611.7" y="533.9" class="pm-rail-lbl" text-anchor="middle">קו הרכבת TEŽ</text>
+<g class="pm-compass" transform="translate(928.0,64.0)"><circle r="20" class="pm-comp-bg"/><path d="M0,-13 L5,4 L0,0 L-5,4 Z" class="pm-comp-n"/><text y="-22" text-anchor="middle" class="pm-comp-t">N</text></g>
+<g class="pm-pin"><circle cx="103.9" cy="612.7" r="15" class="pin-lake"/><text x="103.9" y="617.7" text-anchor="middle" class="pm-num">1</text></g>
+<g class="pm-pin"><circle cx="97.7" cy="570.5" r="15" class="pin-peak"/><text x="97.7" y="575.5" text-anchor="middle" class="pm-num">2</text></g>
+<g class="pm-pin"><circle cx="182.9" cy="458.8" r="15" class="pin-lake"/><text x="182.9" y="463.8" text-anchor="middle" class="pm-num">3</text></g>
+<g class="pm-pin"><circle cx="160.8" cy="415.3" r="15" class="pin-hut"/><text x="160.8" y="420.3" text-anchor="middle" class="pm-num">4</text></g>
+<g class="pm-pin"><circle cx="384.5" cy="398.5" r="15" class="pin-hut"/><text x="384.5" y="403.5" text-anchor="middle" class="pm-num">5</text></g>
+<g class="pm-pin"><circle cx="611.7" cy="503.9" r="15" class="pin-village"/><text x="611.7" y="508.9" text-anchor="middle" class="pm-num">6</text></g>
+<g class="pm-pin"><circle cx="586.3" cy="240.6" r="15" class="pin-peak"/><text x="586.3" y="245.6" text-anchor="middle" class="pm-num">7</text></g>
+<g class="pm-pin"><circle cx="648.0" cy="273.0" r="15" class="pin-lake"/><text x="648.0" y="278.0" text-anchor="middle" class="pm-num">8</text></g>
+<g class="pm-pin"><circle cx="669.6" cy="208.7" r="15" class="pin-lake"/><text x="669.6" y="213.7" text-anchor="middle" class="pm-num">9</text></g>
+<g class="pm-pin"><circle cx="767.3" cy="383.8" r="15" class="pin-village"/><text x="767.3" y="388.8" text-anchor="middle" class="pm-num">10</text></g>
+<g class="pm-pin"><circle cx="890.7" cy="97.0" r="15" class="pin-cave"/><text x="890.7" y="102.0" text-anchor="middle" class="pm-num">11</text></g>
+</svg>
+<ol class="poi-legend">
+<li><span class="lg-num pin-lake">1</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1194,20.063" target="_blank" rel="noopener">שטרבסקה פלסו <span class="lg-cat">· אגם</span> 📍</a></li>
+<li><span class="lg-num pin-peak">2</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.128,20.0611" target="_blank" rel="noopener">פרדנה סוליסקו <span class="lg-cat">· פסגה/רכבל</span> 📍</a></li>
+<li><span class="lg-num pin-lake">3</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1508,20.0876" target="_blank" rel="noopener">פופרדסקה פלסו <span class="lg-cat">· אגם</span> 📍</a></li>
+<li><span class="lg-num pin-hut">4</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.156,20.0857" target="_blank" rel="noopener">בית הקברות הסמלי <span class="lg-cat">· בקתה/עמק</span> 📍</a></li>
+<li><span class="lg-num pin-hut">5</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1631,20.1503" target="_blank" rel="noopener">סליזסקי דום <span class="lg-cat">· בקתה/עמק</span> 📍</a></li>
+<li><span class="lg-num pin-village">6</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1416,20.221" target="_blank" rel="noopener">סטארי סמוקובץ / הרביינוק <span class="lg-cat">· כפר בסיס</span> 📍</a></li>
+<li><span class="lg-num pin-peak">7</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1953,20.2131" target="_blank" rel="noopener">לומניצקי שטיט <span class="lg-cat">· פסגה/רכבל</span> 📍</a></li>
+<li><span class="lg-num pin-lake">8</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1887,20.2323" target="_blank" rel="noopener">סקלנטה פלסו <span class="lg-cat">· אגם</span> 📍</a></li>
+<li><span class="lg-num pin-lake">9</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.2018,20.239" target="_blank" rel="noopener">זלנה פלסו <span class="lg-cat">· אגם</span> 📍</a></li>
+<li><span class="lg-num pin-village">10</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.1661,20.2694" target="_blank" rel="noopener">טטרנסקה לומניצה <span class="lg-cat">· כפר בסיס</span> 📍</a></li>
+<li><span class="lg-num pin-cave">11</span><a class="lg-name" href="https://www.google.com/maps/search/?api=1&query=49.2246,20.3078" target="_blank" rel="noopener">מערת בליאנסקה <span class="lg-cat">· מערה</span> 📍</a></li>
+</ol>
+    <p class="note">מפת התמצאות סכמטית — המיקומים היחסיים נכונים אך לא בקנה מידה מדויק. לחיצה על שם במקרא פותחת את המיקום המדויק ב-Google Maps.</p>
+  </div>
   <div class="grid">
     <div class="card">
       <h4>שטרבסקה פלסו</h4>
       <div class="meta"><span class="sk">Štrbské Pleso</span> · 1,346 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1194,20.063" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אגם הקרחון המצולם ביותר בטטרה הסלובקית, עם שביל טיול שטוח וקל שמקיף אותו לגמרי. נוף קלאסי של פסגות המשתקפות במים — זריחה כאן היא אחת מנקודות הצילום המבוקשות באזור.</p>
       <div class="practical">הליכת היקף מלאה: כ-2.5 ק"מ, 40–50 דקות, מתאימה לעגלות. כניסה חופשית</div>
     </div>
     <div class="card">
       <h4>פופרדסקה פלסו</h4>
       <div class="meta"><span class="sk">Popradské Pleso</span> · 1,494 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1508,20.0876" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אגם קרחון שמגיעים אליו מהליכה נעימה משטרבסקה פלסו, עם קתה הררית גדולה שמגישה אוכל סלובקי חם. נקודת מפתח להמשך הטיול לכיוון עמקים גבוהים יותר באזור.</p>
       <div class="practical">מרחק משטרבסקה פלסו: כ-5 ק"מ, כשעה וארבעים דקות.</div>
     </div>
     <div class="card">
       <h4>בית הקברות הסמלי</h4>
       <div class="meta"><span class="sk">Symbolický cintorín</span> · אנדרטה</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.156,20.0857" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אנדרטה מרגשת בתוך חורשת סלעים ליד פופרדסקה פלסו, שהוקמה ב-1936 בידי הצייר אוטקר שטאפל לזכר כל מי שמתו בהרים — צלבי עץ צבעוניים מגולפים ביד. "לזכר המתים, אזהרה לחיים".</p>
       <div class="practical">כ-15 דקות הליכה מהאגם בשביל הצהוב.</div>
     </div>
     <div class="card">
       <h4>הרביינוק ומפלי המים הקרים</h4>
       <div class="meta"><span class="sk">Hrebienok · Studenovodské vodopády</span> · 1,285 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1416,20.221" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>פוניקולר ההרים היחיד מסוגו בסלובקיה מעלה מסטארי סמוקובץ לתחנת הרביינוק, עם מרפסת תצפית ופסל דוב ענק מעץ. משם שביל לאורך הנחל עד ריינרובה חאטה — בקתת האבן העתיקה ביותר בטטרה (1863) — ועד זמקובסקהו חאטה (1,475 מ') לצד "המפל הענק".</p>
       <div class="practical">קלה עד בינונית, מתאימה למשפחות. פוניקולר: <span class="price">€</span></div>
     </div>
     <div class="card">
       <h4>לומניצקי שטיט</h4>
       <div class="meta"><span class="sk">Lomnický štít</span> · 2,634 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1953,20.2131" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>הפסגה השנייה בגובהה בטטרה הסלובקית ואחת התצפיות היפות באירופה. מגיעים ברכבל דו-שלבי דרך סקלנטה פלסו, ואז ברכבל אדום היסטורי (1937–1940) שמתגבר על כ-855 מ' גובה תוך 8.5 דקות. בפסגה — מצפה כוכבים ותחנת מטאורולוגיה, כ-50 דקות שהייה מוקצבות.</p>
       <div class="practical">כרטיסים מוגבלים ליום — להזמין מראש דרך GoPass. <span class="price">€€€</span></div>
     </div>
     <div class="card">
       <h4>פרדנה סוליסקו</h4>
       <div class="meta"><span class="sk">Predné Solisko</span> · 2,093 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.128,20.0611" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>פסגה אמיתית מעל 2,000 מ' שנגישה יחסית: רכבל כיסאות משטרבסקה פלסו מעלה ישר לבקתת <span class="sk">Chata pod Soliskom</span> (1,840 מ'), ומשם טיפוס תלול של כ-1–1.5 שעות בדרדרות סלע עד לצלב העץ הענק בפסגה, עם נוף פנורמי עוצר נשימה על העמקים והאגמים.</p>
       <div class="practical">הלוך-חזור מהתחנה העליונה: כ-2.5 שעות. רכבל: <span class="price">€€</span></div>
     </div>
     <div class="card">
       <h4>סקלנטה פלסו</h4>
       <div class="meta"><span class="sk">Skalnaté Pleso</span> · תחנת ביניים</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1887,20.2323" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אגם ותחנת רכבל באמצע הדרך ללומניצקי שטיט, עם נקודות תצפית ופינת חי הררי קטנה. אפשר לרדת כאן גם בלי להמשיך לפסגה.</p>
       <div class="practical">מגיעים ברכבל מטטרנסקה לומניצה. <span class="price">€€</span></div>
     </div>
     <div class="card">
       <h4>מערת בליאנסקה</h4>
       <div class="meta"><span class="sk">Belianska jaskyňa</span> · טטרנסקה קוטלינה</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.2246,20.3078" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>מערת הנטיפים היחידה שפתוחה לציבור בשטח הגן הלאומי — עיטורי סינטר, נטיפים וזקיפים, אגמים תת-קרקעיים, ואולם עם אקוסטיקה מיוחדת. שביל לימודי קצר (כ-1 ק"מ, 25 דקות עלייה) מוביל לפתח, וסיור מודרך של כ-70 דקות עובר כ-1.3 ק"מ בתוכה. הטמפרטורה קבועה על כ-5 מעלות — כדאי ז'קט חם.</p>
       <div class="practical">יוצאים מכפר טטרנסקה קוטלינה, סמוך לז'דיאר. סגורה בימי שני; כרטיסים במזומן בלבד בקופה. <span class="price">€</span></div>
     </div>
     <div class="card">
       <h4>זלנה פלסו</h4>
       <div class="meta"><span class="sk">Zelené pleso</span> · האגם הירוק</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.2018,20.239" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>אגם קרחון שקט יחסית עם קתה הררית ותיקה בקצהו, פחות מבוקר משטרבסקה או פופרדסקה פלסו.</p>
       <div class="practical">מגיעים מטטרנסקה לומניצה, פירוט מלא בפרק המסלולים.</div>
     </div>
     <div class="card">
       <h4>סליזסקי דום ועמק וליצקה</h4>
       <div class="meta"><span class="sk">Sliezsky dom · Velická dolina</span> · 1,670 מ'</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1631,20.1503" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>המלון ההררי הגבוה ביותר בסלובקיה, על שפת אגם וליצקה פלסו. נקודת מוצא קלאסית לטיולים מאתגרים באזור, וגם יעד להליכה נעימה בפני עצמה על שפת אגם דרמטי.</p>
       <div class="practical">מגיעים ברגל מטטרנסקה פוליאנקה.</div>
     </div>
@@ -991,6 +1088,7 @@
     <div class="card">
       <h4>מגלשת ההרים טטרבוב <span class="price">€€</span></h4>
       <div class="meta"><span class="sk">Tatrabob</span> · טטרנסקה לומניצה</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1676,20.2823" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>מגלשת הרים (Alpine Coaster) מהירה: הקרונית מטפסת אוטומטית ואז משתחררת לירידה מהירה עם סיבובים חדים בתוך היער.</p>
     </div>
     <div class="card">
@@ -1001,11 +1099,13 @@
     <div class="card">
       <h4>שביל צמרות העצים באכלדקה <span class="price">€€</span></h4>
       <div class="meta"><span class="sk">Bachledka Treetop Walk</span> · ליד ז'דיאר</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.2856,20.3127" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>רכבל סגור עולה לקו הרכס, שם מחכה שביל עץ מוגבה באורך כולל של כ-1.2 ק"מ שמטפס בהדרגה עד גובה 24 מ' בצמרות העצים, ובסופו מגדל תצפית של 32 מ' עם רשת חבלים מעל התהום ומגלשת ספירלה יבשה של 67 מ' לירידה.</p>
     </div>
     <div class="card">
       <h4>טריקלנדיה <span class="price">€€</span></h4>
       <div class="meta"><span class="sk">Tricklandia</span> · סטארי סמוקובץ</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.1414,20.2244" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>גלריית אמנות אשליה על 500 מ"ר — 24 מיצגים של ציורי טריק-ארט בהשראת אגדות סלובקיות, חדרים אנטי-גרביטציוניים, מציאות רבודה, ומבוך המראות הגדול במרכז אירופה. פתוח כל ימות השבוע, ממש ליד תחנת האוטובוס.</p>
       <div class="practical">מושלם ליום גשום או לשעתיים של צחוק עם ילדים — להביא טלפון טעון, הכול מצטלם.</div>
     </div>
@@ -1207,12 +1307,14 @@
     <div class="card">
       <h4>גן העדן הסלובקי</h4>
       <div class="meta"><span class="sk">Slovenský Raj</span> · גן לאומי נפרד, כ-30 דק' מפופרד</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=48.9661,20.3862" target="_blank" rel="noopener">📍 מסלול סוחה בלה במפה</a>
       <p>קניונים צרים וגדושי הרפתקה, נפרדים לגמרי מהגן הלאומי של הטטרה. המסלול המוכר ביותר, <span class="sk">Suchá Belá</span>, עובר כולו בתוך קניון מים צר — טיפוס על סולמות מתכת אנכיים לצד מפלים, הליכה על לוחות מתכת מעוגנים לסלע מעל המים (<span class="sk">stupačky</span>) וגשרי עץ תלויים. חובה נעליים עם אחיזה טובה במים.</p>
       <div class="practical">כניסה בתשלום קטן לשביל <span class="price">€</span></div>
     </div>
     <div class="card">
       <h4>רפסודות עץ על נהר הדונייץ</h4>
       <div class="meta"><span class="sk">Pltníctvo na Dunajci · Červený Kláštor</span> · פייניני, כ-30 דק' מז'דיאר</div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=49.3938,20.4111" target="_blank" rel="noopener">📍 פתח במפה</a>
       <p>שיט מסורתי על רפסודות עץ בקניון הדונייץ שבגן הלאומי פייניני, לאורך הגבול הפולני — מסורת של רפסודאים גוראלים בת מאות שנים. זרם רגוע שלא דורש שום ניסיון, יושבים על ספסלי עץ ונהנים מהנוף; בסוף המסלול בקתת פייניני עם מוזיקה גוראלית ואוכל מקומי.</p>
       <div class="practical">העונה: 1 במאי – 31 באוקטובר. מתאים מאוד למשפחות. <span class="price">€€</span></div>
     </div>
